@@ -11,6 +11,20 @@ def parsePolygon(ss):
 			data.append([float(item[1]), float(item[0])])
 	return data
 
+UPPERDISTRICT_NAMES = {
+	'Юго-Восточный': "ЮВАО",
+	'Зеленоградский': "ЗелАО",
+	'Юго-Западный': "ЮЗАО",
+	'Новомосковский': "ТИНАО",
+	'Северный': "САО",
+	'Западный': "ЗАО",
+	'Южный': "ЮАО",
+	'Центральный': "ЦАО",
+	'Восточный': "ВАО",
+	'Северо-Западный': "СЗАО",
+	'Северо-Восточный': "СВАО",
+}
+
 def main(args):
 	result = {}
 	for index, line in enumerate(args.inp):
@@ -22,16 +36,15 @@ def main(args):
 		rest = line[shapeEnd+1:]
 		if shape[:7] == "POLYGON":
 			data = parsePolygon(shape[10:-2])
-			# continue
 		elif shape[:12] == "MULTIPOLYGON":
-			# continue
 			data = []
 			polyre = re.compile(r"\(\((?P<data>(?:\d+\.\d+ \d+\.\d+,)*\d+\.\d+ \d+\.\d+)\)\)")
 			for polygon in polyre.finditer(shape[14:-1]):
 
 				data.append(parsePolygon(polygon.group("data")))
 
-		name = rest.split(",")[1]
+		name_raw = rest.split(",")[1]
+		name = UPPERDISTRICT_NAMES[name_raw]
 
 		result[name] = data
 

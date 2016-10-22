@@ -7,8 +7,44 @@ body {
 
 #map {
   width: 100%;
-  height: 800;
+  height: 700;
   overflow: hidden;
   position: relative;
+}
+
+#controls {
+  position: absolute;
+  right: 20px;
+  width: 20%;
+  max-width: 300px;
+  height: 90%;
+  top: 5%;
+  background-color: rgba(20, 20, 20, 0.8);
+  border: 1px solid black;
+  z-index: 100500;
+  border-radius: 5px;
+}
+
+#controls button {
+  background: none;
+  border: none;
+  display: block;
+  width: 100%;
+  /*height: 30px;*/
+  font-size: 1.2em;
+  text-align: left;
+  padding: 7px 0px 7px 20px;
+}
+
+#indicators-wrap button.indicator-button {
+  border-bottom: 1px solid #444;
+}
+
+#indicators-wrap button.indicator-button.active {
+  border-left: 4px solid #f00;
+}
+
+#indicators-wrap {
+  border-top: 2px solid #444;
 }
 
