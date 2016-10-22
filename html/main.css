@@ -4,3 +4,11 @@ body {
   color: white;
   text-align:center;
 }
+
+#map {
+  width: 100%;
+  height: 800;
+  overflow: hidden;
+  position: relative;
+}
+
