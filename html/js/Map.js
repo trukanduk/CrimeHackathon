@@ -28,8 +28,8 @@ function Map() {
         color: 'white',
     };
     $.extend(initialStyles, kDistrictInactiveStyle);
-    for (var dname in kAoCoords) {
-        var district = L.polygon(kAoCoords[dname], initialStyles)
+    for (var dname in kDistrictCoords) {
+        var district = L.polygon(kDistrictCoords[dname], initialStyles)
         .on('mouseover', function() {
             this.setStyle(kDistrictActiveStyle);
         }).on('mouseout', function() {
@@ -48,22 +48,26 @@ Map.prototype.setSlice = function(year, indicator) {
     var values = {};
     var maxValue = Number.NEGATIVE_INFINITY;
     for (var dname in this.districts) {
-        var value = getCrimesValue({
-            upperdistrict: dname,
+        var request = {
             year: this.year,
             indicator: this.indicator
-        });
+        };
+        request.district = dname;
+        var value = getCrimesValue(request);
         values[dname] = value;
-        maxValue = Math.max(maxValue, value);
+        if (value !== undefined) {
+            maxValue = Math.max(maxValue, value);
+        }
     }
 
     var colorRatio = 255 / maxValue;
+    console.error(values);
 
     for (var dname in this.districts) {
         var district = this.districts[dname];
         var value = values[dname];
+        console.error(dname, values[dname], value, maxValue);
         if (value !== undefined) {
-            console.error(value, indicator);
             district.setStyle({fillColor: "rgb(" + Math.floor(value*colorRatio) + ", 20, 20)"});
         } else {
             district.setStyle({fillColor: "#888"});

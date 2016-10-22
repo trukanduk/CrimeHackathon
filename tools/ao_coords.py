@@ -33,7 +33,7 @@ def main(args):
 
 		shapeEnd = line.find("\"", 2)
 		shape = line[1:shapeEnd]
-		rest = line[shapeEnd+1:]
+		rest = line[shapeEnd+2:]
 		if shape[:7] == "POLYGON":
 			data = parsePolygon(shape[10:-2])
 		elif shape[:12] == "MULTIPOLYGON":
@@ -43,8 +43,14 @@ def main(args):
 
 				data.append(parsePolygon(polygon.group("data")))
 
-		name_raw = rest.split(",")[1]
-		name = UPPERDISTRICT_NAMES[name_raw]
+		name_raw = rest.split(",")[0]
+		if name_raw[:3] == name_raw[-3:] in {'"""', "'''",}:
+			name_raw = name_raw[3:-3]
+
+		if args.upperdistricts:
+			name = UPPERDISTRICT_NAMES[name_raw]
+		else:
+			name = UPPERDISTRICT_NAMES.get(name_raw, name_raw)
 
 		result[name] = data
 
@@ -55,8 +61,9 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser("Tool for translating AO coords to json.")
 	parser.add_argument("inp", type=argparse.FileType("r", encoding="utf8"), help="input file (*csv)")
 	parser.add_argument("outp", type=argparse.FileType("w", encoding="utf8"), help="output file (*.json|*.js)")
-	parser.add_argument("-varname", default="kAoCoords", help="Variable name")
-	parser.add_argument("-noskipheader", action="store_false", default="true", help="Skip first line (headers)")
+	parser.add_argument("-varname", default="kDistrictCoords", help="Variable name")
+	parser.add_argument("-noskipheader", action="store_true", default=False, help="Skip first line (headers)")
+	parser.add_argument("-upperdistricts", action="store_true", default=False, help="Force translate names")
 	args = parser.parse_args()
 
 	main(args)
