@@ -90,7 +90,7 @@ function makeChart(indicator, year, selectedDistricts) {
 	// items = items.slice(0, Math.min(items.length, 10));
 	// console.log(items);
     // TODO sort by count
-    var color = kIndicatorsInfo[indicator] != undefined ? kIndicatorsInfo[indicator]['color'] : randomColorGenerator();
+    // var color = kIndicatorsInfo[indicator] != undefined ? kIndicatorsInfo[indicator]['color'] : randomColorGenerator();
 	_chart = new Chart(ctx, {
 	    type: 'bar',
 	    data: {
@@ -130,7 +130,10 @@ function makeChart(indicator, year, selectedDistricts) {
 	        }]
 	    },
 	    options: {
-	        scales: {
+		        scales: {
+		        	xAxes: [{
+	                display: false
+	            }],
 	            yAxes: [{
 	                ticks: {
 	                    beginAtZero:true
@@ -141,10 +144,11 @@ function makeChart(indicator, year, selectedDistricts) {
 	        fontColor: 'white',
 	        color: 'white',
         	legend: {
-        		labels: {
-        			fontColor: 'white'
-        		}
+        		enabled: false,	
         	},
+        	tooltips: {
+
+        	}
 	    }
 	});
 }
