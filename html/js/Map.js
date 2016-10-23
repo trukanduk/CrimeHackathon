@@ -26,6 +26,53 @@ var kDistrictStyles = {
     },
 };
 
+function _parseColor(s) {
+    // NOTE: stolen from http://stackoverflow.com/questions/11068240/what-is-the-most-efficient-way-to-parse-a-css-color-in-javascript
+
+    console.error(s, s, s, s.match(/^#([0-9a-f]{3})$/i));
+    m = s.match(/^#([0-9a-f]{3})$/i);
+    if (m) {
+        m = m[1];
+        return [
+            parseInt(m.charAt(0), 16)*0x11,
+            parseInt(m.charAt(1), 16)*0x11,
+            parseInt(m.charAt(2), 16)*0x11
+        ];
+    }
+
+    m = s.match(/^#([0-9a-f]{6})$/i);
+    if (m) {
+        m = m[1];
+        return [
+            parseInt(m.substr(0, 2), 16),
+            parseInt(m.substr(2, 2), 16),
+            parseInt(m.substr(4, 2), 16)
+        ];
+    }
+
+    return ({
+        "red": [255, 0, 0],
+        "yellow": [255, 255, 0],
+        "green": [0, 255, 0],
+        "blue": [0, 0, 255],
+        "black": [0, 0, 0],
+        "white": [255, 255, 255]
+    })[s];
+}
+
+function _mixColors(from, to, rate) {
+    from = _parseColor(from);
+    to = _parseColor(to);
+
+    // console.log(from, to, rate);
+
+    return [
+        Math.floor((to[0] - from[0])*rate + from[0]),
+        Math.floor((to[1] - from[1])*rate + from[1]),
+        Math.floor((to[2] - from[2])*rate + from[2])
+    ];
+}
+
 function _getDistrictStyleId(checked, hover) {
     return (checked ? "checked" : "unchecked") + "_" + (hover ? "hover" : "normal");
 }
@@ -117,16 +164,21 @@ Map.prototype.setSlice = function(year, indicator, normalize) {
         }
     }
 
-    var colorRatio = 255 / maxValue;
+    var colorRatio = 1.0 / maxValue;
 
     for (var dname in this.districts) {
         var district = this.districts[dname];
         var value = values[dname];
 
         if (value !== undefined) {
-            var colorValue = Math.floor(value.counting*colorRatio);
+            // var colorValue = Math.floor(value.counting*colorRatio);
 
-            district.setColor("rgb(" + colorValue + ", 20, 20)")
+            console.warn(_parseColor(kIndicatorsInfo[this.indicator].color),
+                        _parseColor("#000"));
+            var color = _mixColors("#000", kIndicatorsInfo[this.indicator].color, value.counting*colorRatio);
+            console.error(color, colorRatio, maxValue);
+            console.error("rgb(" + color[0] + ", " + color[1] + ", " + color[2] + ")");
+            district.setColor("rgb(" + color[0] + ", " + color[1] + ", " + color[2] + ")")
                     .setTooltipExt(value.abs, value.rel);
         } else {
             district.setColor("#888")
