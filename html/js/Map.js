@@ -29,7 +29,6 @@ var kDistrictStyles = {
 function _parseColor(s) {
     // NOTE: stolen from http://stackoverflow.com/questions/11068240/what-is-the-most-efficient-way-to-parse-a-css-color-in-javascript
 
-    console.error(s, s, s, s.match(/^#([0-9a-f]{3})$/i));
     m = s.match(/^#([0-9a-f]{3})$/i);
     if (m) {
         m = m[1];
@@ -64,7 +63,6 @@ function _mixColors(from, to, rate) {
     from = _parseColor(from);
     to = _parseColor(to);
 
-    // console.log(from, to, rate);
 
     return [
         Math.floor((to[0] - from[0])*rate + from[0]),
@@ -171,13 +169,7 @@ Map.prototype.setSlice = function(year, indicator, normalize) {
         var value = values[dname];
 
         if (value !== undefined) {
-            // var colorValue = Math.floor(value.counting*colorRatio);
-
-            console.warn(_parseColor(kIndicatorsInfo[this.indicator].color),
-                        _parseColor("#000"));
             var color = _mixColors("#000", kIndicatorsInfo[this.indicator].color, value.counting*colorRatio);
-            console.error(color, colorRatio, maxValue);
-            console.error("rgb(" + color[0] + ", " + color[1] + ", " + color[2] + ")");
             district.setColor("rgb(" + color[0] + ", " + color[1] + ", " + color[2] + ")")
                     .setTooltipExt(value.abs, value.rel);
         } else {
