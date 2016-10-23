@@ -74,9 +74,9 @@ function makeChart(indicator, year, selectedDistricts) {
 
 	// Create items array
 	var keys = Object.keys(districtCounts);
-	if (selectedDistricts.size > 0) {
-		keys = Array.from(intersection(new Set(selectedDistricts), new Set(keys)));
-	}
+	// if (selectedDistricts.size > 0) {
+	// 	keys = Array.from(intersection(new Set(selectedDistricts), new Set(keys)));
+	// }
 	var items = keys
 		.filter(function(key) { return districtCounts[key] != 0; })
 		.map(function(key) {
@@ -106,6 +106,13 @@ function makeChart(indicator, year, selectedDistricts) {
 
 	            // color set
 	            backgroundColor: items.map(function(x) {
+	            	if (selectedDistricts.size > 0) {
+	            		if (selectedDistricts.has(x[0])) {
+	            			return kIndicatorsInfo[indicator] != undefined ? kIndicatorsInfo[indicator]['color'] : 'green';
+	            		} else {
+	            			return 'grey';
+	            		}
+	            	}
 	            	return _districtColors[x[0]];
 	            }),
 	            // borderColor: [
