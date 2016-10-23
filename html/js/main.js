@@ -16,7 +16,7 @@ var kValidIndicators = [
 	"drugs",
 ];
 
-var selectedDistricts = [];
+var selectedDistricts = new Set();
 
 function selectSlice(year, indicator, normalize) {
 	if (year === undefined) {

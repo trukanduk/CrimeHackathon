@@ -77,7 +77,11 @@ function District_check(value) {
 	this.checked = !!value;
     this._updateStyle();
 
-    selectedDistricts[this.name] = (this.checked ? true : undefined);
+    if (this.checked) {
+	    selectedDistricts.add(this.name);
+    } else {
+	    selectedDistricts.delete(this.name);
+	}
 	return this;
 }
 
