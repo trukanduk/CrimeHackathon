@@ -134,6 +134,10 @@ Map.prototype.setSlice = function(year, indicator, normalize) {
     }
 };
 
+onDistrictCickCallback = function() {
+    makeChart(this.indicator, this.year, new Set());
+}
+
 Map.prototype._districtClick = function(clickedDname) {
     if (kMultipleDistrictCheckingEnabled) {
         var district = this.districts[clickedDname];
@@ -147,6 +151,7 @@ Map.prototype._districtClick = function(clickedDname) {
         }
     }
 
+    console.log('callCallback');
     if (this.onDistrictCickCallback) {
         this.onDistrictCickCallback();
     }

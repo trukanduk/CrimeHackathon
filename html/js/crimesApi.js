@@ -118,3 +118,18 @@ function getPopulation(params) {
 		return _cachedPopulations.upperdistricts[params.upperdistrict];
 	}
 }
+
+var _cachedDistricts;
+// returns set of all districts
+function getDistricts() {
+
+	if (_cachedDistricts) {
+		return _cachedDistricts;
+	}
+	_cachedDistricts = new Set();
+	for (var i = 0; i < kCrimesData.length; ++i) {
+		var datum = kCrimesData[i];
+		_cachedDistricts.add(datum.district);
+	}
+	return _cachedDistricts;
+}
