@@ -8,12 +8,28 @@ var randomColorGenerator = function () {
     return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
 };
 
+var _districtColors = {}
+
+for (var d of getDistricts()) {
+	_districtColors[d] = randomColorGenerator();
+}
+
 var crimeColor = {'murders' : '#ce2b00'};
 
 var _chart;
 
-function makeChart(indicator, year, hightlightDistricts) {
-	console.log('makeChart ' + indicator + ' ' + year);
+function intersection(a, b) {
+    var intersection = new Set();
+    for (var elem of b) {
+        if (a.has(elem)) {
+            intersection.add(elem);
+        }
+    }
+    return intersection;
+}
+
+function makeChart(indicator, year, selectedDistricts) {
+	console.log('makeChart ' + indicator + ' ' + year + ' ' + Array.from(selectedDistricts));
 
 	if (_chart != undefined) {
 		_chart.destroy();
@@ -49,7 +65,11 @@ function makeChart(indicator, year, hightlightDistricts) {
     }
 
 	// Create items array
-	var items = Object.keys(districtCounts)
+	var keys = Object.keys(districtCounts);
+	if (selectedDistricts.size > 0) {
+		keys = Array.from(intersection(new Set(selectedDistricts), new Set(keys)));
+	}
+	var items = keys
 		.filter(function(key) { return districtCounts[key] != 0; })
 		.map(function(key) {
 			return [key, districtCounts[key].abs];
@@ -67,10 +87,19 @@ function makeChart(indicator, year, hightlightDistricts) {
 	    data: {
 	        labels: items.map(function(x) { return x[0]; }),
 	        datasets: [{
-	            label: indicator + ' по районам',
+	            label: kIndicatorsInfo[indicator] != undefined ? kIndicatorsInfo[indicator]['translation'] : indicator,
 	            data: items.map(function(x) { return x[1]; }),
-	            // backgroundColor: randomColorGenerator(),
-	            backgroundColor: kIndicatorsInfo[indicator] != undefined ? kIndicatorsInfo[indicator]['color'] : randomColorGenerator(),
+	            
+	            // single color 
+	            // backgroundColor: items.map(function(x) {
+	            // 	return kIndicatorsInfo[indicator] != undefined ? kIndicatorsInfo[indicator]['color'] : randomColorGenerator();
+	            // }),
+
+	            // color set
+	            backgroundColor: items.map(function(x) {
+	            	return _districtColors[x[0]];
+	            }),
+
 	            borderColor: randomColorGenerator(),
 	            
 	            // borderColor: [
