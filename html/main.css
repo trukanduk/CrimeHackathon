@@ -144,3 +144,16 @@ button:focus {
 #controls .toggle-off {
   padding-left: 15px;
 }
+
+#controls .sources-ref {
+  margin-left: 15px;
+  position: absolute;
+  bottom: 10px;
+}
+#controls .sources-ref > a {
+  color:white;
+}
+#controls .sources-ref > a:hover {
+  text-decoration: none;
+  color: #ccc;
+}
