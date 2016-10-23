@@ -14,7 +14,9 @@ var kValidIndicators = [
 	"hijacking",
 	"murders",
 	"drugs",
-]
+];
+
+var selectedDistricts = [];
 
 function selectSlice(year, indicator, normalize) {
 	if (year === undefined) {

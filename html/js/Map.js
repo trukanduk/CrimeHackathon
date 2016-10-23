@@ -1,4 +1,37 @@
+var kMultipleDistrictCheckingEnabled = false;
+
 var map;
+
+var kDistrictStyles = {
+    "unchecked_hover": {
+        fillOpacity: 0.9,
+        weight: 2,
+        color: 'white',
+    },
+    "unchecked_normal": {
+        fillOpacity: 0.5,
+        weight: 0.5,
+        color: 'white',
+    },
+    "checked_normal": {
+        fillOpacity: 0.5,
+        weight: 2,
+        color: 'red',
+    },
+    "checked_hover": {
+        fillOpacity: 0.9,
+        weight: 2,
+        color: 'red',
+    },
+};
+
+function _getDistrictStyleId(checked, hover) {
+    return (checked ? "checked" : "unchecked") + "_" + (hover ? "hover" : "normal");
+}
+
+function _getDistrictStyle(checked, hover) {
+    return kDistrictStyles[_getDistrictStyleId(checked, hover)];
+}
 
 var kDistrictActiveStyle = {
     fillOpacity: 0.9,
@@ -13,7 +46,8 @@ var kDistrictInactiveStyle = {
 function Map() {
     this.map = L.map('map', {
         center: [55.755, 37.6],
-        zoom: 11
+        zoom: 11,
+        scrollWheelZoom: false,
     });
 
     L.tileLayer(
@@ -27,17 +61,9 @@ function Map() {
         fillColor: 'rgba(255, 20, 20, 1)',
         color: 'white',
     };
-    $.extend(initialStyles, kDistrictInactiveStyle);
+    $.extend(initialStyles, _getDistrictStyle(false, false));
     for (var dname in kDistrictCoords) {
-        var district = L.polygon(kDistrictCoords[dname], initialStyles)
-        .on('mouseover', function() {
-            this.setStyle(kDistrictActiveStyle)
-                .openTooltip();
-        }).on('mouseout', function() {
-            this.setStyle(kDistrictInactiveStyle)
-                .closeTooltip();
-            // this.setStyle({fillOpacity: 0.5, weight: 0.5});
-        }).addTo(this.map);
+        var district = new_District(this, dname, initialStyles).addTo(this.map);
 
         this.districts[dname] = district;
     }
@@ -78,13 +104,30 @@ Map.prototype.setSlice = function(year, indicator, normalize) {
 
         if (value !== undefined) {
             var colorValue = Math.floor(value.counting*colorRatio);
-            district.setStyle({fillColor: "rgb(" + colorValue + ", 20, 20)"})
-                    .bindTooltip(dname + ": " + value.abs + " случаев<br/>" +
-                                Math.floor(value["rel"]*100000) + " случаев на 100000 жителей");
+            district.setColor("rgb(" + colorValue + ", 20, 20)")
+                    .setTooltipExt(value.abs, value.rel);
         } else {
-            district.setStyle({fillColor: "#888"})
-                    .bindTooltip(dname + ": нет данных");
+            district.setColor("#888")
+                    .setUndefinedTooltip();
         }
+    }
+};
+
+Map.prototype._districtClick = function(clickedDname) {
+    if (kMultipleDistrictCheckingEnabled) {
+        var district = this.districts[clickedDname];
+        if (district) {
+            district.toggleCheck();
+        }
+    } else {
+        for (var dname in this.districts) {
+            var district = this.districts[dname];
+            district.check(dname == clickedDname);
+        }
+    }
+
+    if (this.onDistrictCickCallback) {
+        this.onDistrictCickCallback();
     }
 };
 
