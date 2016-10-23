@@ -23,6 +23,7 @@ body {
   border: 1px solid black;
   z-index: 100500;
   border-radius: 5px;
+  text-align: left;
 }
 
 #controls button {
@@ -36,15 +37,49 @@ body {
   padding: 7px 0px 7px 20px;
 }
 
+#controls #normalize-checkbox-wrap {
+  display: inline-block;
+  padding: 5px;
+  font-weight: 100;
+  font-size: 1.2em;
+}
+
+#controls #normalize-checkbox {
+  transform: scale(1.2);
+  margin-right: 5px;
+}
+
 #indicators-wrap button.indicator-button {
   border-bottom: 1px solid #444;
 }
 
 #indicators-wrap button.indicator-button.active {
   border-left: 4px solid #f00;
+  background-color: rgba(5, 5, 5, 0.5);
 }
 
 #indicators-wrap {
   border-top: 2px solid #444;
 }
 
+button:focus {
+  outline: 0px;
+}
+
+#controls button:hover {
+  background-color: rgba(10, 10, 10, 0.5);
+}
+
+#controls #dropdown-year-values {
+  width: 90%;
+  background-color: rgba(10, 10, 10, 0.9);
+  border: 1px solid black;
+}
+
+#controls #dropdown-year-values a {
+  color: white;
+}
+
+#controls #dropdown-year-values a:hover {
+  background-color: #888;
+}

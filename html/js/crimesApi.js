@@ -93,3 +93,28 @@ function getCrimesValue(params) {
 
 	return result;
 }
+
+var _cachedPopulations;
+// params: district or upperdistrict
+function getPopulation(params) {
+	if (!_cachedPopulations) {
+		_cachedPopulations = {
+			districts: {},
+			upperdistricts: {},
+		};
+
+		for (var i = 0; i < kCrimesData.length; ++i) {
+			var datum = kCrimesData[i];
+			if (datum.indicator == "population") {
+				_cachedPopulations.districts[datum.district] = datum.value;
+				_cachedPopulations.upperdistricts[datum.upperdistrict] = datum.value;
+			}
+		}
+	}
+
+	if (params.district) {
+		return _cachedPopulations.districts[params.district];
+	} else {
+		return _cachedPopulations.upperdistricts[params.upperdistrict];
+	}
+}

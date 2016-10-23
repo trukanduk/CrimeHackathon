@@ -31,9 +31,11 @@ function Map() {
     for (var dname in kDistrictCoords) {
         var district = L.polygon(kDistrictCoords[dname], initialStyles)
         .on('mouseover', function() {
-            this.setStyle(kDistrictActiveStyle);
+            this.setStyle(kDistrictActiveStyle)
+                .openTooltip();
         }).on('mouseout', function() {
-            this.setStyle(kDistrictInactiveStyle);
+            this.setStyle(kDistrictInactiveStyle)
+                .closeTooltip();
             // this.setStyle({fillOpacity: 0.5, weight: 0.5});
         }).addTo(this.map);
 
@@ -41,7 +43,7 @@ function Map() {
     }
 }
 
-Map.prototype.setSlice = function(year, indicator) {
+Map.prototype.setSlice = function(year, indicator, normalize) {
     this.year = year;
     this.indicator = indicator;
 
@@ -54,23 +56,34 @@ Map.prototype.setSlice = function(year, indicator) {
         };
         request.district = dname;
         var value = getCrimesValue(request);
-        values[dname] = value;
-        if (value !== undefined) {
-            maxValue = Math.max(maxValue, value);
+        if (value === undefined) {
+            continue;
         }
+
+        value = {
+            abs: value,
+            rel: value / getPopulation({district: dname}),
+        };
+        value.counting = normalize ? value["rel"] : value.abs;
+
+        values[dname] = value;
+        maxValue = Math.max(maxValue, value.counting);
     }
 
     var colorRatio = 255 / maxValue;
-    console.error(values);
 
     for (var dname in this.districts) {
         var district = this.districts[dname];
         var value = values[dname];
-        console.error(dname, values[dname], value, maxValue);
+
         if (value !== undefined) {
-            district.setStyle({fillColor: "rgb(" + Math.floor(value*colorRatio) + ", 20, 20)"});
+            var colorValue = Math.floor(value.counting*colorRatio);
+            district.setStyle({fillColor: "rgb(" + colorValue + ", 20, 20)"})
+                    .bindTooltip(dname + ": " + value.abs + " случаев<br/>" +
+                                Math.floor(value["rel"]*100000) + " случаев на 100000 жителей");
         } else {
-            district.setStyle({fillColor: "#888"});
+            district.setStyle({fillColor: "#888"})
+                    .bindTooltip(dname + ": нет данных");
         }
     }
 };

@@ -1,5 +1,6 @@
 var activeYear = undefined;
 var activeIndicator = "drugs";
+var activeNormalize = true;
 
 var kValidIndicators = [
 	"gravecrimes",
@@ -15,28 +16,38 @@ var kValidIndicators = [
 	"drugs",
 ]
 
-function selectSlice(year, indicator) {
+function selectSlice(year, indicator, normalize) {
+	if (year === undefined) {
+		year = activeYear;
+	}
+	if (indicator === undefined) {
+		indicator = activeIndicator;
+	}
+	if (normalize === undefined) {
+		normalize = activeNormalize;
+	}
+
 	if (!kValidIndicators.find(function(v) { return v == indicator; })) {
 		indicator = kValidIndicators[0];
 	}
 
 	activeYear = year*1;
 	activeIndicator = indicator;
+	activeNormalize = normalize;
 
 	$("#year-dropdown-header-label").html(year + "");
 	$("#indicators-wrap .indicator-button").removeClass("active");
 	$("#indicators-wrap #indicator-button-" + indicator).addClass("active");
 
 	if (map) {
-		map.setSlice(activeYear, activeIndicator);
+		map.setSlice(activeYear, activeIndicator, activeNormalize);
 	}
 
 	// TODO: charts
 }
 
 function selectYear(year) {
-	console.log("selectYear:", year);
-	selectSlice(year, activeIndicator);
+	selectSlice(year);
 }
 
 function _initYears() {
@@ -68,7 +79,7 @@ function _initYears() {
 }
 
 function selectIndicator(indicator) {
-	selectSlice(activeYear, indicator);
+	selectSlice(undefined, indicator);
 }
 
 function _initIndicators() {
@@ -91,4 +102,9 @@ function _initIndicators() {
 $(document).ready(function() {
 	_initYears();
 	_initIndicators();
+
+	$("#normalize-checkbox").on("change", function(e) {
+		console.log(this, $(this).is(":checked"));
+		selectSlice(undefined, undefined, $(this).is(":checked"));
+	});
 });
