@@ -70,7 +70,7 @@ function makeChart(indicator, year, hightlightDistricts) {
 	            label: indicator + ' по районам',
 	            data: items.map(function(x) { return x[1]; }),
 	            // backgroundColor: randomColorGenerator(),
-	            backgroundColor: items.map(function(x) { return crimeColor[x[1]]; }),
+	            backgroundColor: kIndicatorsInfo[indicator] != undefined ? kIndicatorsInfo[indicator]['color'] : randomColorGenerator(),
 	            borderColor: randomColorGenerator(),
 	            
 	            // borderColor: [

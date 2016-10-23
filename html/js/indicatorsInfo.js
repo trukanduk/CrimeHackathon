@@ -27,7 +27,7 @@ var kIndicatorsInfo = {
 		"color": "#fde23b"
 	},
 	"burglary": {
-		"translation": "Квартиные кражи",
+		"translation": "Квартирные кражи",
 		"color": "#11977f"
 	},
 	"carthefts": {
