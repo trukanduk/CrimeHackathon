@@ -1,4 +1,5 @@
 var kMultipleDistrictCheckingEnabled = false;
+var kNormalizeColorWithAllYears = true;
 
 var map;
 
@@ -95,6 +96,27 @@ Map.prototype.setSlice = function(year, indicator, normalize) {
         values[dname] = value;
         maxValue = Math.max(maxValue, value.counting);
     }
+    // FIXME:
+    if (kNormalizeColorWithAllYears) {
+        var result = selectCrimes({indicator: this.indicator});
+        for (var i = 0; i < result.length; ++i) {
+            var record = result[i];
+            var value = record.value;
+            if (value === undefined) {
+                continue;
+            }
+
+            if (normalize) {
+                var population = getPopulation({district: record.district});
+                if (population === undefined) {
+                    continue;
+                }
+                value /= population;
+            }
+            maxValue = Math.max(maxValue, value);
+        }
+    }
+    console.log(maxValue);
 
     var colorRatio = 255 / maxValue;
 
