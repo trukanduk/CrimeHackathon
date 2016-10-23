@@ -54,7 +54,7 @@ body {
 }
 
 #indicators-wrap button.indicator-button.active {
-  border-left: 4px solid #f00;
+  /*border-left: 4px solid #f00;*/
   background-color: rgba(5, 5, 5, 0.5);
 }
 
@@ -80,6 +80,40 @@ button:focus {
   color: white;
 }
 
+#controls .indicator-icon-wrap {
+  display: inline-block;
+  margin-right: 5px;
+  position: relative;
+}
+
+#controls .indicator-icon-wrap .indicator-icon-overlay {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(20, 20, 20, 0.4);
+}
+
+#controls button:hover .indicator-icon-wrap .indicator-icon-overlay {
+  background-color: rgba(20, 20, 20, 0.2);
+}
+
+#controls button.active .indicator-icon-wrap .indicator-icon-overlay {
+  background-color: transparent;
+}
+
+#controls img.indicator-icon {
+  width: 30px;
+  height: 30px;
+}
+
 #controls #dropdown-year-values a:hover {
   background-color: #888;
+}
+
+
+#charts canvas {
+  display: block;
 }

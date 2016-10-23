@@ -2,20 +2,6 @@ var activeYear = undefined;
 var activeIndicator = "drugs";
 var activeNormalize = true;
 
-var kValidIndicators = [
-	"gravecrimes",
-	"healthdamage",
-	"robbing",
-	"banditry",
-	"thefts",
-	"burglary",
-	"carthefts",
-	"fraud",
-	"hijacking",
-	"murders",
-	"drugs",
-];
-
 var selectedDistricts = new Set();
 
 function selectSlice(year, indicator, normalize) {
@@ -92,10 +78,14 @@ function _initIndicators() {
 		$("<button class='indicator-button'" +
 			"id='indicator-button-" + indicator + "'" +
 			" name='" + indicator + "'>" +
-				indicator +
+			"<div class='indicator-icon-wrap'><img class='indicator-icon' id='indicator-icon-" +
+				indicator + "' src='img/indicator-icons/" + indicator + ".png'/><div class='indicator-icon-overlay'></div></div>" +
+				kIndicatorsInfo[indicator].translation +
 			"</button>")
 		.on("click", function() { selectIndicator($(this).attr("name")); })
 		.appendTo(parent);
+
+		$("#indicator-button-" + indicator + ".active").css("border-left", "4px solid " + kIndicatorsInfo[indicator].color);
 	}
 
 	selectIndicator("banditry");

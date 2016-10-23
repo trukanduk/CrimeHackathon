@@ -1,5 +1,5 @@
 var kMultipleDistrictCheckingEnabled = false;
-var kNormalizeColorWithAllYears = true;
+var kNormalizeColorWithAllYears = false;
 
 var map;
 
@@ -116,7 +116,6 @@ Map.prototype.setSlice = function(year, indicator, normalize) {
             maxValue = Math.max(maxValue, value);
         }
     }
-    console.log(maxValue);
 
     var colorRatio = 255 / maxValue;
 
