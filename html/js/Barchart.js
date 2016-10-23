@@ -4,14 +4,22 @@ $(document).ready(function() {
 	makeChart(this.indicator, this.year, new Set());
 });
 
-var randomColorGenerator = function () { 
-    return '#' + (Math.random().toString(16) + '0000000').slice(2, 8); 
+var randomColorGenerator = function () {
+    return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
 };
 
 var _districtColors = {}
 
 for (var d of getDistricts()) {
 	_districtColors[d] = randomColorGenerator();
+}
+
+var makeDarkerColor = function(cl) {
+	return [
+		Math.floor(cl[0] * 0.6),
+		Math.floor(cl[1] * 0.6),
+		Math.floor(cl[2] * 0.6),
+	];
 }
 
 var crimeColor = {'murders' : '#ce2b00'};
@@ -79,9 +87,10 @@ function makeChart(indicator, year, selectedDistricts) {
 	items.sort(function(first, second) {
 		return second[1] - first[1];
 	});
-	items = items.slice(0, Math.min(items.length, 10));
+	// items = items.slice(0, Math.min(items.length, 10));
 	// console.log(items);
     // TODO sort by count
+    var color = kIndicatorsInfo[indicator] != undefined ? kIndicatorsInfo[indicator]['color'] : randomColorGenerator();
 	_chart = new Chart(ctx, {
 	    type: 'bar',
 	    data: {
@@ -89,8 +98,8 @@ function makeChart(indicator, year, selectedDistricts) {
 	        datasets: [{
 	            label: kIndicatorsInfo[indicator] != undefined ? kIndicatorsInfo[indicator]['translation'] : indicator,
 	            data: items.map(function(x) { return x[1]; }),
-	            
-	            // single color 
+
+	            // single color
 	            // backgroundColor: items.map(function(x) {
 	            // 	return kIndicatorsInfo[indicator] != undefined ? kIndicatorsInfo[indicator]['color'] : randomColorGenerator();
 	            // }),
@@ -101,7 +110,6 @@ function makeChart(indicator, year, selectedDistricts) {
 	            }),
 
 	            borderColor: randomColorGenerator(),
-	            
 	            // borderColor: [
 	            //     'rgba(255,99,132,1)',
 	            //     'rgba(54, 162, 235, 1)',
@@ -110,7 +118,10 @@ function makeChart(indicator, year, selectedDistricts) {
 	            //     'rgba(153, 102, 255, 1)',
 	            //     'rgba(255, 159, 64, 1)'
 	            // ],
-	            borderWidth: 1
+	            borderWidth: 1,
+	            textColor: 'white',
+	            fontColor: 'white',
+		        color: 'white',
 	        }]
 	    },
 	    options: {
@@ -120,7 +131,10 @@ function makeChart(indicator, year, selectedDistricts) {
 	                    beginAtZero:true
 	                }
 	            }]
-	        }
+	        },
+	        textColor: 'white',
+	        fontColor: 'white',
+	        color: 'white',
 	    }
 	});
 }

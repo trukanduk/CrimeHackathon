@@ -150,9 +150,11 @@ button:focus {
   position: absolute;
   bottom: 10px;
 }
+
 #controls .sources-ref > a {
   color:white;
 }
+
 #controls .sources-ref > a:hover {
   text-decoration: none;
   color: #ccc;

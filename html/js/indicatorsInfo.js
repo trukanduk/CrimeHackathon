@@ -28,14 +28,18 @@ var kIndicatorsInfo = {
 	},
 	"burglary": {
 		"translation": "Квартирные кражи",
-		"color": "#11977f"
+		"color": "#ffae2c"
+		// "color": "#d9a135"
+		// "color": "#11977f"
 	},
 	"carthefts": {
 		"translation": "Автомобильные кражи",
-		"color": "#0ba6a8"
+		"color": "#ff29a9"
+		// "color": "#0ba6a8"
 	},
 	"drugs": {
 		"translation": "Наркотики",
-		"color": "#5ac37e"
+		"color": "#ccf22f"
+		// "color": "#5ac37e"
 	},
 }
