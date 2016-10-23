@@ -1,7 +1,7 @@
 // TODO
 
 $(document).ready(function() {
-	makeChart(this.indicator, this.year, new Set());
+	makeChart(this.indicator, this.year, this.selectedDistricts);
 });
 
 var randomColorGenerator = function () {
