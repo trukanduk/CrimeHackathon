@@ -125,6 +125,7 @@ Map.prototype.setSlice = function(year, indicator, normalize) {
 
         if (value !== undefined) {
             var colorValue = Math.floor(value.counting*colorRatio);
+
             district.setColor("rgb(" + colorValue + ", 20, 20)")
                     .setTooltipExt(value.abs, value.rel);
         } else {

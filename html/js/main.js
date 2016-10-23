@@ -71,6 +71,7 @@ function selectIndicator(indicator) {
 }
 
 function _initIndicators() {
+	var rules = "";
 	var parent = $("#indicators-wrap");
 	for (var i = 0; i < kValidIndicators.length; ++i) {
 		var indicator = kValidIndicators[i];
@@ -85,8 +86,16 @@ function _initIndicators() {
 		.on("click", function() { selectIndicator($(this).attr("name")); })
 		.appendTo(parent);
 
-		$("#indicator-button-" + indicator + ".active").css("border-left", "4px solid " + kIndicatorsInfo[indicator].color);
+		var selector = "#indicator-button-" + indicator + ".active";
+		var color = kIndicatorsInfo[indicator].color;
+		var rule = "{color: " + color + "; border-left: 4px solid " + color + ";}";
+
+		rules += selector + rule + "\n" + selector +
+			" .indicator-icon-wrap { margin-left: -3px; }";
 	}
+
+	var styleTag = $("<style>" + rules + "</style>");
+	$('html > head').append(styleTag);
 
 	selectIndicator("banditry");
 }
