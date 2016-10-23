@@ -108,8 +108,6 @@ function makeChart(indicator, year, selectedDistricts) {
 	            backgroundColor: items.map(function(x) {
 	            	return _districtColors[x[0]];
 	            }),
-
-	            borderColor: randomColorGenerator(),
 	            // borderColor: [
 	            //     'rgba(255,99,132,1)',
 	            //     'rgba(54, 162, 235, 1)',
@@ -135,6 +133,11 @@ function makeChart(indicator, year, selectedDistricts) {
 	        textColor: 'white',
 	        fontColor: 'white',
 	        color: 'white',
+        	legend: {
+        		labels: {
+        			fontColor: 'white'
+        		}
+        	},
 	    }
 	});
 }
