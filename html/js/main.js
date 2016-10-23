@@ -31,7 +31,7 @@ function selectSlice(year, indicator, normalize) {
 		map.setSlice(activeYear, activeIndicator, activeNormalize);
 	}
 
-	// TODO: charts
+	makeChart(activeIndicator, activeYear, new Set());
 }
 
 function selectYear(year) {
