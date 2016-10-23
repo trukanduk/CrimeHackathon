@@ -1,13 +1,17 @@
 // TODO
 
 $(document).ready(function() {
+	makeChart('banditry', new Set());
+});
+
+function makeChart(indicator, hightlightDistricts) {
 	var canvas = $("#barchart").get(0);
 	ctx = canvas.getContext("2d");
 
 	var myChart = new Chart(ctx, {
 	    type: 'bar',
 	    data: {
-	        labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+	        labels: Array.from(getDistricts()).slice(0,6),
 	        datasets: [{
 	            label: '# of Votes',
 	            data: [12, 19, 3, 5, 2, 3],
@@ -40,4 +44,4 @@ $(document).ready(function() {
 	        }
 	    }
 	});
-});
+}
